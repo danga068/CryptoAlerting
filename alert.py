@@ -13,7 +13,7 @@ class PagerDuty(object):
         self.integration_key = "3d32bae209b8447295cc86a51f264576"
 
     def is_valid_pager(self):
-       return (int(time.time()) - self.last_pager) > 60*30 # 10 Mins
+       return (int(time.time()) - self.last_pager) > 60*3 # 10 Mins
 
     def callPagerDuty(self, message):
         print ("Calling Pager ...", message)
@@ -92,16 +92,17 @@ class CryptoCompare:
             price_diff_percent = round(((price_diff * 100) / last_price), 2)
 
             if abs(price_diff_percent) >= change_percent:
-                message = "{currency} price change by {price_diff_percent} in last {key_time}, From: {last_price} to: {current_price}".format(currency=currency, price_diff_percent=price_diff_percent, key_time=key_time, last_price=last_price, current_price=current_price)
+                message = "{currency} price change by {price_diff_percent}% in last {key_time}, From: {last_price} to: {current_price}".format(currency=currency, price_diff_percent=price_diff_percent, key_time=key_time, last_price=last_price, current_price=current_price)
                 return True, message
 
         return False, ""
 
 
     def check_alert(self):
+        pager_duty = PagerDuty()
         while True:
             try:
-                if PagerDuty().is_valid_pager():
+                if pager_duty.is_valid_pager():
                     for currency in currencies:
                         url = self.url.format(currency)
                         response = requests.get(url)
@@ -113,15 +114,15 @@ class CryptoCompare:
                             is_pager, message = self.send_alert_on_pagerduty(currency, price_history)
 
                             if is_pager and not self.is_first_call:
-                                self.last_pager = int(time.time())
-                                PagerDuty().callPagerDuty(message)
+                                pager_duty.last_pager = int(time.time())
+                                pager_duty.callPagerDuty(message)
                                 print (message)
                             else:
                                 print ("{}: No Pager here !!!!".format(currency))
                         except Exception as e:
                                 print ("Api error : ", response.text)
                     print ("\n\n")
-                    time.sleep(30)
+                    time.sleep(60)
                     self.is_first_call = False
             except Exception as e:
                 print ("Error ", e)
