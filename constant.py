@@ -1,6 +1,6 @@
 Group_A = ["BTC", "XRP"]
 Group_B = ["ETH"]
-Group_C = ["LTC"]
+Group_C = ["ZRX", "OMG"]
 
 currencies = Group_A + Group_B + Group_C
 
@@ -25,13 +25,13 @@ rules = {
             "60_min": 3.0
         },
         "Group_C": {
-            "1_min": 1.0,
-            "3_min": 1.2,
-            "5_min": 1.6,
-            "10_min": 1.8,
-            "15_min": 2.0,
-            "30_min": 3.0,
-            "60_min": 4.0
+            "1_min": 4,
+            "3_min": 5,
+            "5_min": 6.5,
+            "10_min": 8,
+            "15_min": 10,
+            "30_min": 12,
+            "60_min": 15
         }
     },
     "night": {
@@ -54,13 +54,13 @@ rules = {
             "60_min": 4.5
         },
         "Group_C": {
-            "1_min": 2.7,
-            "3_min": 3.1,
-            "5_min": 3.4,
-            "10_min": 3.6,
-            "15_min": 3.9,
-            "30_min": 4.2,
-            "60_min": 4.7
+            "1_min": 4,
+            "3_min": 5,
+            "5_min": 6.5,
+            "10_min": 8,
+            "15_min": 10,
+            "30_min": 12,
+            "60_min": 15
         }
     }
 }
