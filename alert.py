@@ -10,7 +10,7 @@ from datetime import datetime
 class PagerDuty(object):
     def __init__(self):
         self.last_pager = 900000000
-        self.integration_key = "3d32bae209b8447295cc86a51f264576"
+        self.integration_key = "5168fd3d64294735bb04e51a7e65734c"
 
     def is_valid_pager(self):
        return (int(time.time()) - self.last_pager) > 60*3 # 10 Mins
