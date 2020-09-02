@@ -1,8 +1,11 @@
 Group_A = ["BTC", "XRP"]
-Group_B = ["ETH"]
-Group_C = ["ZRX", "OMG"]
+Group_B = ["ETH", "TRX"]
+Group_C = ["ZRX"]
 
 currencies = Group_A + Group_B + Group_C
+
+REDIS_HOST = "159.89.167.82"
+REDIS_PASS = "dangaiit068"
 
 rules = {
     "day": {
