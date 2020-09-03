@@ -4,9 +4,6 @@ Group_C = []
 
 currencies = Group_A + Group_B + Group_C
 
-REDIS_HOST = "159.89.167.82"
-REDIS_PASS = "dangaiit068"
-
 rules = {
     "day": {
         "Group_A": {
@@ -67,3 +64,8 @@ rules = {
         }
     }
 }
+
+
+integration_key = "5168fd3d64294735bb04e51a7e65734c"
+redis_host = "159.89.167.82"
+redis_pass = "dangaiit068"
