@@ -69,3 +69,10 @@ rules = {
 integration_key = "5168fd3d64294735bb04e51a7e65734c"
 redis_host = "159.89.167.82"
 redis_pass = "dangaiit068"
+redis_db = 0
+
+try:
+    from local_settings import *
+except ImportError as error:
+    pass
+
