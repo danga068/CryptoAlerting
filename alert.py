@@ -11,7 +11,6 @@ from datetime import datetime
 class PagerDuty(object):
     def __init__(self):
         self.last_pager = 900000000
-        self.integration_key = "5168fd3d64294735bb04e51a7e65734c"
 
     def is_valid_pager(self):
        return (int(time.time()) - self.last_pager) > 60*3 # 10 Mins
@@ -19,7 +18,7 @@ class PagerDuty(object):
     def callPagerDuty(self, message):
         print ("Calling Pager ...", message)
         pypd.EventV2.create(data={
-            'routing_key': self.integration_key,
+            'routing_key': integration_key,
             'event_action': 'trigger',
             'payload': {
                 'summary': message,
