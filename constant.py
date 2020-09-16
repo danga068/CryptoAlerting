@@ -1,5 +1,5 @@
-Group_A = ["XRP"]
-Group_B = ["ETH", "TRX"]
+Group_A = ["TRX"]
+Group_B = []
 Group_C = []
 
 currencies = Group_A + Group_B + Group_C
@@ -7,11 +7,11 @@ currencies = Group_A + Group_B + Group_C
 rules = {
     "day": {
         "Group_A": {
-            "1_min": 0.60,
-            "3_min": 0.85,
-            "5_min": 1.0,
+            "1_min": 0.70,
+            "3_min": 0.90,
+            "5_min": 1.2,
             "10_min": 1.5,
-            "15_min": 1.5,
+            "15_min": 1.7,
             "30_min": 2.0,
             "60_min": 3.0
         },

@@ -6,6 +6,7 @@ import datetime
 import requests
 
 from redis_config import Redis
+from crypro_alert import trigger_alert_script
 
 
 class CryptoCompareDataWarehouse:
@@ -52,6 +53,7 @@ class CryptoCompareDataWarehouse:
 
                 print ("Processing Index: ", index)
                 index += 1
+                trigger_alert_script()
                 time.sleep(60)
             except Exception as err:
                 if self.is_valid_notification():
