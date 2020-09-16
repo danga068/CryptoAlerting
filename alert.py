@@ -4,6 +4,7 @@ import time
 import requests
 import pypd
 import datetime
+import pytz
 
 from datetime import datetime
 
@@ -37,10 +38,7 @@ class CryptoCompare:
         self.url = "https://min-api.cryptocompare.com/data/histominute?fsym={}&tsym=USD&limit=61&aggregate=1"
 
         self.is_call = True
-        if self.sleep_time_range[0] <= datetime.now().hour <= self.sleep_time_range[1]:
-            shift_type = "night"
-        else:
-            shift_type = "day"
+        self.ist = pytz.timezone('Asia/Calcutta')
 
     def getBitBnsPrices(self):
         bitbns_response = requests.get("https://bitbns.com/order/getTickerWithVolume/")
@@ -65,7 +63,7 @@ class CryptoCompare:
 
     def get_shift(self):
         self.sleep_time_range = [1, 9]
-        if self.sleep_time_range[0] <= datetime.now().hour <= self.sleep_time_range[1]:
+        if self.sleep_time_range[0] <= datetime.now(self.ist).hour <= self.sleep_time_range[1]:
             shift_type = "night"
         else:
             shift_type = "day"
