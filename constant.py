@@ -1,5 +1,5 @@
-Group_A = ["TRX"]
-Group_B = []
+Group_A = []
+Group_B = ["XRP"]
 Group_C = []
 
 currencies = Group_A + Group_B + Group_C
@@ -36,7 +36,7 @@ rules = {
     },
     "night": {
         "Group_A": {
-            "1_min": 2,
+            "1_min": 2.0,
             "3_min": 2.7,
             "5_min": 3.0,
             "10_min": 3.3,
@@ -67,7 +67,7 @@ rules = {
 
 
 integration_key = "466d065e25614e369b568b9e5c7b199b"
-redis_host = "159.89.167.82"
+# redis_host = "34.82.159.43"
 redis_host = "127.0.0.1"
 redis_pass = "dangaiit068"
 redis_db = 0

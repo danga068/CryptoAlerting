@@ -1,3 +1,4 @@
+import ast
 import json
 import time
 import requests
@@ -13,10 +14,7 @@ from redis_config import Redis
 class PagerDuty(object):
     def __init__(self):
         self.last_pager = 900000000
-        self.integration_key = "5168fd3d64294735bb04e51a7e65734c"
-
-    def is_valid_pager(self):
-       return (int(time.time()) - self.last_pager) > 60*3 # 10 Mins
+        self.integration_key = "ca1d7de318cb4290a2a8d00fb981d9ce"
 
     def callPagerDuty(self, message):
         print ("Calling Pager ...", message)
@@ -73,62 +71,71 @@ class CryptoAlert:
             shift_type = "day"
         return shift_type
 
-    def send_alert_on_pagerduty(self, currency, price_history):
-        last_index = len(price_history) - 1
-        current_price = price_history[last_index].get("close")
-
-        shift_type = self.get_shift()
-        group = self.get_currency_group(currency)
-        if not group:
-            return None
-
-        alert_rules_dict = rules[shift_type][group]
-
-        for key_time in alert_rules_dict:
-            change_percent = alert_rules_dict[key_time]
-
-            time_min = int(key_time.split('_')[0])
-            last_price = price_history[last_index-time_min].get("close")
-            price_diff = current_price - last_price
-
-            price_diff_percent = round(((price_diff * 100) / last_price), 2)
-
-            if abs(price_diff_percent) >= change_percent:
-                message = "{currency} price change by {price_diff_percent}% in last {key_time}, From: {last_price} to: {current_price}".format(currency=currency, price_diff_percent=price_diff_percent, key_time=key_time, last_price=last_price, current_price=current_price)
-                return True, message
-
-        return False, ""
-
-
     def check_alert(self):
         try:
             shift_type = self.get_shift()
 
+            last_index = self.redis_client.get("last_index")
+
+            current_price = ast.literal_eval(self.redis_client.get(int(last_index)).decode("utf-8"))
+            last_1_min = ast.literal_eval(self.redis_client.get(int(last_index) - 1).decode("utf-8"))
+            last_3_min = ast.literal_eval(self.redis_client.get(int(last_index) - 3).decode("utf-8"))
+            last_5_min = ast.literal_eval(self.redis_client.get(int(last_index) - 5).decode("utf-8"))
+            last_10_min = ast.literal_eval(self.redis_client.get(int(last_index) - 10).decode("utf-8"))
+            last_15_min = ast.literal_eval(self.redis_client.get(int(last_index) - 15).decode("utf-8"))
+            last_30_min = ast.literal_eval(self.redis_client.get(int(last_index) - 30).decode("utf-8"))
+            last_60_min = ast.literal_eval(self.redis_client.get(int(last_index) - 60).decode("utf-8"))
+
+            last_x_prices = [last_1_min, last_3_min, last_5_min, last_10_min, last_30_min, last_60_min]
+
             for currency in currencies:
+                message = None
                 group = self.get_currency_group(currency)
-                print (currency, " -- ", group, " -- " , shift_type)
+                # for last_x_price in last_x_prices:
+                #     diff_x_min = (((current_price[currency] - last_x_price[0][currency]) * 100) / last_x_price[0][currency])
 
-            # 
-            # alert_rules_dict = rules[shift_type][group]
+                diff_1_min = round((((current_price[currency] - last_1_min[currency]) * 100) / last_1_min[currency]), 2)
+                diff_3_min = round((((current_price[currency] - last_3_min[currency]) * 100) / last_3_min[currency]), 2)
+                diff_5_min = round((((current_price[currency] - last_5_min[currency]) * 100) / last_5_min[currency]), 2)
+                diff_10_min = round((((current_price[currency] - last_10_min[currency]) * 100) / last_10_min[currency]), 2)
+                diff_15_min = round((((current_price[currency] - last_15_min[currency]) * 100) / last_15_min[currency]), 2)
+                diff_30_min = round((((current_price[currency] - last_30_min[currency]) * 100) / last_30_min[currency]), 2)
+                diff_60_min = round((((current_price[currency] - last_60_min[currency]) * 100) / last_60_min[currency]), 2)
 
-            # for key_time in alert_rules_dict:
-            #     change_percent = alert_rules_dict[key_time]
+                if abs(diff_1_min) >= rules[shift_type][group]["1_min"] and not self.redis_client.get(currency+"_1_min"):
+                    self.redis_client.setex(currency+"_1_min", 1*60+3, 1)
+                    message = currency + " last 1 min change: " + str(diff_1_min) + " current price: " +  str(current_price[currency])
 
-            #     time_min = key_time.split('_')[0]
+                elif abs(diff_3_min) >= rules[shift_type][group]["3_min"] and not self.redis_client.get(currency+"3_min"):
+                    self.redis_client.setex(currency+"_3_min", 3*60+3, 1)
+                    message = currency + " last 3 min change: " + str(diff_3_min) + " current price: " +  str(current_price[currency])
 
-            #     self.redis_client.get("integration_key")
+                elif abs(diff_5_min) >= rules[shift_type][group]["5_min"] and not self.redis_client.get(currency+"5_min"):
+                    self.redis_client.setex(currency+"_5_min", 5*60+3, 1)
+                    message = currency + " last 5 min change: " + str(diff_5_min) + " current price: " +  str(current_price[currency])
 
-            #     time.sleep(100)
-            #     self.is_first_call = False
+                elif abs(diff_10_min) >= rules[shift_type][group]["10_min"] and not self.redis_client.get(currency+"10_min"):
+                    self.redis_client.setex(currency+"_10_min", 10*60+3, 1)
+                    message = currency + " last 10 min change: " + str(diff_10_min) + " current price: " +  str(current_price[currency])
+
+                elif abs(diff_15_min) >= rules[shift_type][group]["15_min"] and not self.redis_client.get(currency+"15_min"):
+                    self.redis_client.setex(currency+"_15_min", 15*60+3, 1)
+                    message = currency + " last 15 min change: " + str(diff_15_min) + " current price: " +  str(current_price[currency])
+
+                elif abs(diff_30_min) >= rules[shift_type][group]["30_min"] and not self.redis_client.get(currency+"30_min"):
+                    self.redis_client.setex(currency+"_30_min", 30*60+3, 1)
+                    message = currency + " last 30 min change: " + str(diff_30_min) + " current price: " +  str(current_price[currency])
+
+                elif abs(diff_60_min) >= rules[shift_type][group]["60_min"] and not self.redis_client.get(currency+"60_min"):
+                    self.redis_client.setex(currency+"_60_min", 60*60+3, 1)
+                    message = currency + " last 60 min change: " + str(diff_60_min) + " current price: " +  str(current_price[currency])
+                if message:
+                    print (datetime.now(), message, shift_type, group)
+                    PagerDuty().callPagerDuty(message)
         except Exception as e:
             print ("Error ", e)
+            PagerDuty().callPagerDuty("Alerting System Down!!!" + str(e))
 
 
 def trigger_alert_script():
-    try:
-        CryptoAlert().check_alert()
-    except Exception as err:
-        PagerDuty().callPagerDuty("Alerting System Down!!!" + str(err))
-
-
-trigger_alert_script()
+    CryptoAlert().check_alert()
