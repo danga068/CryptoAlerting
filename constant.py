@@ -68,6 +68,7 @@ rules = {
 
 integration_key = "466d065e25614e369b568b9e5c7b199b"
 redis_host = "159.89.167.82"
+redis_host = "127.0.0.1"
 redis_pass = "dangaiit068"
 redis_db = 0
 

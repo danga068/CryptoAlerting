@@ -101,30 +101,34 @@ class CryptoAlert:
 
 
     def check_alert(self):
-        while True:
-            try:
-                shift_type = self.get_shift()
+        try:
+            shift_type = self.get_shift()
+
+            for currency in currencies:
                 group = self.get_currency_group(currency)
-                alert_rules_dict = rules[shift_type][group]
+                print (currency, " -- ", group, " -- " , shift_type)
 
-                for key_time in alert_rules_dict:
-                    change_percent = alert_rules_dict[key_time]
+            # 
+            # alert_rules_dict = rules[shift_type][group]
 
-                    time_min = key_time.split('_')[0]
+            # for key_time in alert_rules_dict:
+            #     change_percent = alert_rules_dict[key_time]
 
-                    self.redis_client.get("integration_key")
+            #     time_min = key_time.split('_')[0]
 
-                    time.sleep(100)
-                    self.is_first_call = False
-            except Exception as e:
-                print ("Error ", e)
+            #     self.redis_client.get("integration_key")
+
+            #     time.sleep(100)
+            #     self.is_first_call = False
+        except Exception as e:
+            print ("Error ", e)
 
 
-def trigger_alert_script(self):
+def trigger_alert_script():
     try:
-        crypto_alert = CryptoAlert()
-        crypto_alert.check_alert()
+        CryptoAlert().check_alert()
     except Exception as err:
         PagerDuty().callPagerDuty("Alerting System Down!!!" + str(err))
 
 
+trigger_alert_script()
