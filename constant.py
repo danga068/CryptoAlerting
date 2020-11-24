@@ -1,6 +1,6 @@
 Group_A = []
-Group_B = ["XRP"]
-Group_C = []
+Group_B = []
+Group_C = ["XRP"]
 
 currencies = Group_A + Group_B + Group_C
 
@@ -25,13 +25,13 @@ rules = {
             "60_min": 3.0
         },
         "Group_C": {
-            "1_min": 4,
-            "3_min": 5,
-            "5_min": 6.5,
-            "10_min": 8,
-            "15_min": 10,
-            "30_min": 12,
-            "60_min": 15
+            "1_min": 2,
+            "3_min": 3,
+            "5_min": 4,
+            "10_min": 5,
+            "15_min": 7,
+            "30_min": 8,
+            "60_min": 10
         }
     },
     "night": {
@@ -54,13 +54,13 @@ rules = {
             "60_min": 4.5
         },
         "Group_C": {
-            "1_min": 4,
-            "3_min": 5,
-            "5_min": 6.5,
-            "10_min": 8,
-            "15_min": 10,
-            "30_min": 12,
-            "60_min": 15
+            "1_min": 3,
+            "3_min": 4,
+            "5_min": 5,
+            "10_min": 6,
+            "15_min": 8,
+            "30_min": 9,
+            "60_min": 11
         }
     }
 }
