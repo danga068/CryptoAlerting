@@ -58,7 +58,7 @@ class CryptoCompareDataWarehouse:
             except Exception as err:
                 if self.is_valid_notification():
                     self.mobile_notification(str(err))
-
+                time.sleep(60)
 try:
     crypto_compare = CryptoCompareDataWarehouse()
     crypto_compare.data_pull()

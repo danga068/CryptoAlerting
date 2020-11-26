@@ -13,10 +13,10 @@ from redis_config import Redis
 
 class PagerDuty(object):
     def __init__(self):
-        self.last_pager = 900000000
+        self.last_pager = 0
         self.integration_key = "ca1d7de318cb4290a2a8d00fb981d9ce"
 
-    def callPagerDuty(self, message):
+    def callPagerDuty(self, message, is_error=False):
         print ("Calling Pager ...", message)
         pypd.EventV2.create(data={
             'routing_key': self.integration_key,
@@ -134,7 +134,7 @@ class CryptoAlert:
                     PagerDuty().callPagerDuty(message)
         except Exception as e:
             print ("Error ", e)
-            PagerDuty().callPagerDuty("Alerting System Down!!!" + str(e))
+            PagerDuty().callPagerDuty("Alerting System Down!!!" + str(e), is_error=True)
 
 
 def trigger_alert_script():
