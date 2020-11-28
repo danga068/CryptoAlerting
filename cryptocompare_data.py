@@ -21,6 +21,7 @@ class CryptoCompareDataWarehouse:
        return (int(time.time()) - self.last_notification) > 60 # 10 Mins
 
     def mobile_notification(self, message):
+        print (message)
         self.last_notification = int(time.time())
         pypd.EventV2.create(data={
             'routing_key': integration_key,
