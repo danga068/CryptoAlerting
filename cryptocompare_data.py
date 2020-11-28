@@ -2,8 +2,8 @@ import json
 import time
 import pypd
 import pytz
-import datetime
 import requests
+from datetime import datetime
 
 from constant import *
 from redis_config import Redis
@@ -16,6 +16,7 @@ class CryptoCompareDataWarehouse:
         self.redis_client = Redis().connection()
         self.time_zone = pytz.timezone('Asia/Kolkata')
         self.url = "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=100&tsym=USD"
+        self.current_datetime_ist = datetime.now(self.time_zone)
 
     def is_valid_notification(self):
        return (int(time.time()) - self.last_notification) > 60 # 10 Mins
@@ -48,12 +49,12 @@ class CryptoCompareDataWarehouse:
                     price = coin_info.get("RAW").get("USD").get("PRICE")
                     symbol = coin_info.get("RAW").get("USD").get("FROMSYMBOL")
                     payload[symbol] = price
-                payload["datetime"] = str(datetime.datetime.now(self.time_zone).strftime('%Y-%m-%d %H:%M:%S'))
+                payload["datetime"] = str(self.current_datetime_ist.strftime('%Y-%m-%d %H:%M:%S'))
 
                 self.redis_client.set("last_index", str(index))
                 self.redis_client.setex(index, 12*3600, str(payload))
 
-                print ("Processing Index: ", index)
+                print (payload["datetime"], " => Index: ", index)
                 index += 1
                 trigger_alert_script()
                 time.sleep(60)

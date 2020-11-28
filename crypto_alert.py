@@ -3,7 +3,6 @@ import json
 import time
 import requests
 import pypd
-import datetime
 
 from datetime import datetime
 
@@ -35,9 +34,11 @@ class CryptoAlert:
         self.is_first_call = False
 
         self.redis_client = Redis().connection()
+        self.time_zone = pytz.timezone('Asia/Kolkata')
+        self.current_datetime_ist = datetime.now(self.time_zone)
 
         self.sleep_time_range = [1, 9]
-        if self.sleep_time_range[0] <= datetime.now().hour <= self.sleep_time_range[1]:
+        if self.sleep_time_range[0] <= self.current_datetime_ist.hour <= self.sleep_time_range[1]:
             shift_type = "night"
         else:
             shift_type = "day"
@@ -65,7 +66,7 @@ class CryptoAlert:
 
     def get_shift(self):
         self.sleep_time_range = [1, 9]
-        if self.sleep_time_range[0] <= datetime.now().hour <= self.sleep_time_range[1]:
+        if self.sleep_time_range[0] <= self.current_datetime_ist.hour <= self.sleep_time_range[1]:
             shift_type = "night"
         else:
             shift_type = "day"
@@ -130,7 +131,7 @@ class CryptoAlert:
                     self.redis_client.setex(currency+"_60_min", 60*60+3, 1)
                     message = currency + " last 60 min change: " + str(diff_60_min) + " current price: " +  str(current_price[currency])
                 if message:
-                    print (datetime.now(), message, shift_type, group)
+                    print (self.current_datetime_ist, message, shift_type, group)
                     PagerDuty().callPagerDuty(message)
         except Exception as e:
             print ("Error ", e)
