@@ -19,7 +19,7 @@ class PagerDuty(object):
     def callPagerDuty(self, message, is_error=False):
         print ("Calling Pager ...", message)
         pypd.EventV2.create(data={
-            'routing_key': self.integration_key,
+            'routing_key': integration_key,
             'event_action': 'trigger',
             'payload': {
                 'summary': message,
