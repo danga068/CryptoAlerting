@@ -5,6 +5,7 @@ import pytz
 import datetime
 import requests
 
+from constant import *
 from redis_config import Redis
 from crypto_alert import trigger_alert_script
 
@@ -22,7 +23,7 @@ class CryptoCompareDataWarehouse:
     def mobile_notification(self, message):
         self.last_notification = int(time.time())
         pypd.EventV2.create(data={
-            'routing_key': self.redis_client.get("integration_key"),
+            'routing_key': integration_key,
             'event_action': 'trigger',
             'payload': {
                 'summary': message,
