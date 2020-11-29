@@ -41,6 +41,7 @@ class CryptoCompareDataWarehouse:
 
         while True:
             try:
+                self.current_datetime_ist = datetime.now(self.time_zone)
                 response = requests.get(self.url)
                 coin_info_list = json.loads(response.text).get("Data", [])
 
