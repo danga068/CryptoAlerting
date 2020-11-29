@@ -47,9 +47,12 @@ class CryptoCompareDataWarehouse:
 
                 payload = {}
                 for coin_info in coin_info_list:
-                    price = coin_info.get("RAW").get("USD").get("PRICE")
-                    symbol = coin_info.get("RAW").get("USD").get("FROMSYMBOL")
-                    payload[symbol] = price
+                    price = coin_info.get("RAW", {}).get("USD", {}).get("PRICE")
+                    symbol = coin_info.get("RAW", {}).get("USD", {}).get("FROMSYMBOL")
+                    if price and symbol:
+                        payload[symbol] = price
+                if not payload:
+                    raise Exception("Empty payload")
                 payload["datetime"] = str(self.current_datetime_ist.strftime('%Y-%m-%d %H:%M:%S'))
 
                 self.redis_client.set("last_index", str(index))
