@@ -14,7 +14,6 @@ from redis_config import Redis
 class PagerDuty(object):
     def __init__(self):
         self.last_pager = 0
-        self.integration_key = "ca1d7de318cb4290a2a8d00fb981d9ce"
 
     def callPagerDuty(self, message, is_error=False):
         print ("Calling Pager ...", message)
