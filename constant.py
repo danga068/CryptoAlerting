@@ -1,5 +1,5 @@
 Group_A = []
-Group_B = ["XRP"]
+Group_B = ["BTC", "XRP", "ETH"]
 Group_C = []
 
 currencies = Group_A + Group_B + Group_C
@@ -19,8 +19,8 @@ rules = {
             "1_min": 0.80,
             "3_min": 1.0,
             "5_min": 1.2,
-            "10_min": 1.5,
-            "15_min": 1.8,
+            "10_min": 1.6,
+            "15_min": 1.9,
             "30_min": 2.2,
             "60_min": 3.0
         },
