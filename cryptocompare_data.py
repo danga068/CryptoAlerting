@@ -64,11 +64,11 @@ class CryptoCompareDataWarehouse:
                 time.sleep(60)
             except Exception as err:
                 if self.is_valid_notification():
-                    self.mobile_notification(str(err))
+                    self.mobile_notification("Data Warehouse Service Down! Error: " + str(err))
                 time.sleep(60)
 try:
     crypto_compare = CryptoCompareDataWarehouse()
     crypto_compare.data_pull()
 except Exception as err:
-    crypto_compare.mobile_notification("Service Stopped: " + str(err))
+    crypto_compare.mobile_notification("Data Warehouse Service Stopped: " + str(err))
 

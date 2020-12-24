@@ -135,7 +135,7 @@ class CryptoAlert:
                     PagerDuty().callPagerDuty(message)
         except Exception as e:
             print ("Error ", e)
-            PagerDuty().callPagerDuty("Alerting System Down!!!" + str(e), is_error=True)
+            PagerDuty().callPagerDuty("Alerting System Down !" + str(e), is_error=True)
 
 
 def trigger_alert_script():
