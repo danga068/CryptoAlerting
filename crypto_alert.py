@@ -107,27 +107,27 @@ class CryptoAlert:
                     self.redis_client.setex(currency+"_1_min", 1*60+3, 1)
                     message = currency + " last 1 min change: " + str(diff_1_min) + " current price: " +  str(current_price[currency])
 
-                elif abs(diff_3_min) >= rules[shift_type][group]["3_min"] and not self.redis_client.get(currency+"3_min"):
+                elif abs(diff_3_min) >= rules[shift_type][group]["3_min"] and not self.redis_client.get(currency+"_3_min"):
                     self.redis_client.setex(currency+"_3_min", 3*60+3, 1)
                     message = currency + " last 3 min change: " + str(diff_3_min) + " current price: " +  str(current_price[currency])
 
-                elif abs(diff_5_min) >= rules[shift_type][group]["5_min"] and not self.redis_client.get(currency+"5_min"):
+                elif abs(diff_5_min) >= rules[shift_type][group]["5_min"] and not self.redis_client.get(currency+"_5_min"):
                     self.redis_client.setex(currency+"_5_min", 5*60+3, 1)
                     message = currency + " last 5 min change: " + str(diff_5_min) + " current price: " +  str(current_price[currency])
 
-                elif abs(diff_10_min) >= rules[shift_type][group]["10_min"] and not self.redis_client.get(currency+"10_min"):
+                elif abs(diff_10_min) >= rules[shift_type][group]["10_min"] and not self.redis_client.get(currency+"_10_min"):
                     self.redis_client.setex(currency+"_10_min", 10*60+3, 1)
                     message = currency + " last 10 min change: " + str(diff_10_min) + " current price: " +  str(current_price[currency])
 
-                elif abs(diff_15_min) >= rules[shift_type][group]["15_min"] and not self.redis_client.get(currency+"15_min"):
+                elif abs(diff_15_min) >= rules[shift_type][group]["15_min"] and not self.redis_client.get(currency+"_15_min"):
                     self.redis_client.setex(currency+"_15_min", 15*60+3, 1)
                     message = currency + " last 15 min change: " + str(diff_15_min) + " current price: " +  str(current_price[currency])
 
-                elif abs(diff_30_min) >= rules[shift_type][group]["30_min"] and not self.redis_client.get(currency+"30_min"):
+                elif abs(diff_30_min) >= rules[shift_type][group]["30_min"] and not self.redis_client.get(currency+"_30_min"):
                     self.redis_client.setex(currency+"_30_min", 30*60+3, 1)
                     message = currency + " last 30 min change: " + str(diff_30_min) + " current price: " +  str(current_price[currency])
 
-                elif abs(diff_60_min) >= rules[shift_type][group]["60_min"] and not self.redis_client.get(currency+"60_min"):
+                elif abs(diff_60_min) >= rules[shift_type][group]["60_min"] and not self.redis_client.get(currency+"_60_min"):
                     self.redis_client.setex(currency+"_60_min", 60*60+3, 1)
                     message = currency + " last 60 min change: " + str(diff_60_min) + " current price: " +  str(current_price[currency])
                 if message:
