@@ -1,6 +1,6 @@
-Group_A = ["BTC", "LTC", "ETH"]
-Group_B = ["XRP"]
-Group_C = []
+Group_A = ["BTC", ]
+Group_B = ["XRP", "ETH"]
+Group_C = ["LTC", "TRX"]
 
 currencies = Group_A + Group_B + Group_C
 
