@@ -45,7 +45,7 @@ class CryptoAlert:
 
     def getBitBnsPrices(self):
         bitbns_response = requests.get("https://bitbns.com/order/getTickerWithVolume/")
-        bitbns_prices = json.loads(bitbns_response.text)
+        return = json.loads(bitbns_response.text)
 
         message = " Bitbns -- "
         message += "BTC: " + str(bitbns_prices.get("BTC").get("yes_price")) + ", "
@@ -89,6 +89,9 @@ class CryptoAlert:
 
             last_x_prices = [last_1_min, last_3_min, last_5_min, last_10_min, last_30_min, last_60_min]
 
+            bns_data = self.getBitBnsPrices()
+            bns_usdt_price = round(bns_data.get("USDT").get("yes_price"), 2)
+
             for currency in currencies:
                 message = None
                 group = self.get_currency_group(currency)
@@ -103,9 +106,12 @@ class CryptoAlert:
                 diff_30_min = round((((current_price[currency] - last_30_min[currency]) * 100) / last_30_min[currency]), 2)
                 diff_60_min = round((((current_price[currency] - last_60_min[currency]) * 100) / last_60_min[currency]), 2)
 
+                bns_price = round(bns_data.get(currency).get("yes_price"), 2)
+
                 if abs(diff_1_min) >= rules[shift_type][group]["1_min"] and not self.redis_client.get(currency+"_1_min"):
                     self.redis_client.setex(currency+"_1_min", 1*60+3, 1)
-                    message = currency + " last 1 min change: " + str(diff_1_min) + " current price: " +  str(current_price[currency])
+                    curr_price_inr = round(current_price[currency] * bns_usdt_price, 2)
+                    message = "{} {} => {} ({}) BNS: {} in 1 min {}".format(currency, str(last_1_min[currency]), str(current_price[currency]), str(curr_price_inr), str(bns_price), str(diff_1_min))
 
                 elif abs(diff_3_min) >= rules[shift_type][group]["3_min"] and not self.redis_client.get(currency+"_3_min"):
                     self.redis_client.setex(currency+"_3_min", 3*60+3, 1)
