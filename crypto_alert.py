@@ -112,7 +112,9 @@ class CryptoAlert:
                 if abs(diff_1_min) >= rules[shift_type][group]["1_min"] and not self.redis_client.get(currency+"_1_min"):
                     self.redis_client.setex(currency+"_1_min", 1*60+3, 1)
                     last_price_inr = round(last_1_min[currency] * bns_usdt_price, 2)
-                    message = "{} {} => {} ({} => {}) BNS: {} in 1 min {}".format(currency, str(last_1_min[currency]), str(current_price[currency]), str(last_price_inr), str(curr_price_inr), str(bns_price), str(diff_1_min))
+                    message = "{} {} => {} | {} ({} => {} | {}) BNS: {} in 1 min {}".format(
+                                    currency, str(last_1_min[currency]), str(current_price[currency]), str(current_price[currency]-last_1_min[currency]),
+                                    str(last_price_inr), str(curr_price_inr), str(curr_price_inr-last_price_inr), str(bns_price), str(diff_1_min))
 
                 elif abs(diff_3_min) >= rules[shift_type][group]["3_min"] and not self.redis_client.get(currency+"_3_min"):
                     self.redis_client.setex(currency+"_3_min", 3*60+3, 1)
