@@ -45,7 +45,7 @@ class CryptoAlert:
 
     def getBitBnsPrices(self):
         bitbns_response = requests.get("https://bitbns.com/order/getTickerWithVolume/")
-        return = json.loads(bitbns_response.text)
+        return json.loads(bitbns_response.text)
 
         message = " Bitbns -- "
         message += "BTC: " + str(bitbns_prices.get("BTC").get("yes_price")) + ", "
