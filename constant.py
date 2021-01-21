@@ -66,7 +66,7 @@ rules = {
 }
 
 
-integration_key = "de3e525d7a414ae49ae15c5433150ece"
+integration_key = "38be7dad8c0f45aeac4628a1c09e1c00"
 # redis_host = "34.82.159.43"
 redis_host = "127.0.0.1"
 redis_pass = "dangaiit068"
