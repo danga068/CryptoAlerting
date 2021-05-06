@@ -1,6 +1,6 @@
 Group_A = ["BTC"]
-Group_B = ["ETH", "LTC", "XRP", "TRX"]
-Group_C = ["XLM"]
+Group_B = ["ETH", "XRP", "ADA"]
+Group_C = ["DOGE"]
 
 currencies = Group_A + Group_B + Group_C
 
@@ -25,13 +25,13 @@ rules = {
             "60_min": 3.5
         },
         "Group_C": {
-            "1_min": 1.6,
-            "3_min": 2,
-            "5_min": 4,
-            "10_min": 6.5,
-            "15_min": 8,
-            "30_min": 10,
-            "60_min": 15
+            "1_min": 2,
+            "3_min": 2.6,
+            "5_min": 3,
+            "10_min": 4,
+            "15_min": 5,
+            "30_min": 7,
+            "60_min": 9
         }
     },
     "night": {
@@ -56,9 +56,9 @@ rules = {
         "Group_C": {
             "1_min": 6,
             "3_min": 7,
-            "5_min": 9,
-            "10_min": 11,
-            "15_min": 13,
+            "5_min": 8,
+            "10_min": 10,
+            "15_min": 12,
             "30_min": 14,
             "60_min": 17
         }
@@ -66,7 +66,7 @@ rules = {
 }
 
 
-integration_key = "38be7dad8c0f45aeac4628a1c09e1c00"
+integration_key = "3c67564a8944440ec056a52e1c0674d0"
 # redis_host = "34.82.159.43"
 redis_host = "127.0.0.1"
 redis_pass = "dangaiit068"
