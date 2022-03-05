@@ -185,7 +185,7 @@ class CryptoAlert:
             diff_10_min = round((((current_price_data[currency] - last_10_min_data[currency]) * 100) / last_10_min_data[currency]), 2)
 
             if abs(diff_10_min) >= rules["hot"]["10_min"]:
-                message = "hot coin {} pump/dump".format(currency)
+                message = "hot coin {} pump/dump by {}%".format(currency, str(diff_10_min))
                 print (message)
                 PagerDuty().callPagerDuty(message)
 
