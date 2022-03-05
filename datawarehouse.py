@@ -70,6 +70,7 @@ class DataWarehouse:
                 # trigger_alert_script()
                 time.sleep(60)
             except Exception as err:
+                print(err)
                 if self.is_valid_notification():
                     self.mobile_notification("Data Warehouse Service Down! Error: " + str(err))
                 time.sleep(60)

@@ -62,9 +62,17 @@ rules = {
             "30_min": 14,
             "60_min": 17
         }
+    },
+    "hot": {
+        "1_min": 5,
+        "3_min": 5,
+        "5_min": 5,
+        "10_min": 5,
+        "15_min": 5,
+        "30_min": 5,
+        "60_min": 5
     }
 }
-
 
 integration_key = "3c67564a8944440ec056a52e1c0674d0"
 # redis_host = "34.82.159.43"

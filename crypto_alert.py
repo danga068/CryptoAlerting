@@ -172,6 +172,20 @@ class CryptoAlert:
             print ("Error ", e)
             PagerDuty().callPagerDuty("Alerting System Down !" + str(e), is_error=True)
 
+    def hot_coin_alert(self):
+        hot_rules = rules["hot"]
+        last_index = self.redis_client.get("last_index")
+
+        current_price_data = ast.literal_eval(self.redis_client.get(int(last_index)).decode("utf-8"))
+        last_10_min_data = ast.literal_eval(self.redis_client.get(int(last_index) - 10).decode("utf-8"))
+
+        # for currency, price in current_price.items():
+        for currency in current_price_data.keys():
+            diff_10_min = round((((current_price_data[currency] - last_10_min_data[currency]) * 100) / last_10_min_data[currency]), 2)
+
+            if abs(diff_10_min) >= rules["hot"]["10_min"]:
+                print ("hot coin pump/dump")
+
 
 def trigger_alert_script():
-    CryptoAlert().check_alert()
+    CryptoAlert().hot_coin_alert()
