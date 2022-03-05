@@ -179,6 +179,9 @@ class CryptoAlert:
         last_10_min_data = ast.literal_eval(self.redis_client.get(int(last_index) - 10).decode("utf-8"))
 
         for currency in current_price_data.keys():
+            if currency == "datetime":
+                continue
+
             diff_10_min = round((((current_price_data[currency] - last_10_min_data[currency]) * 100) / last_10_min_data[currency]), 2)
 
             if abs(diff_10_min) >= rules["hot"]["10_min"]:
