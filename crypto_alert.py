@@ -186,7 +186,7 @@ class CryptoAlert:
 
             if abs(diff_10_min) >= rules["hot"]["10_min"] and not self.redis_client.get(currency):
                 self.redis_client.setex(currency, 15*60, 1)
-                message = "hot coin {} pump/dump by {}%".format(currency, str(diff_10_min))
+                message = "Coin {} pump/dump by {}% : {} -> {}".format(currency, str(diff_10_min), str(last_10_min_data[currency]), str(current_price_data[currency]))
                 print (message)
                 PagerDuty().callPagerDuty(message)
 
