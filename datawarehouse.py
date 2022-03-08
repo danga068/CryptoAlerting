@@ -67,7 +67,7 @@ class DataWarehouse:
 
                 print (payload["datetime"], " => Index: ", index)
                 index += 1
-                # trigger_alert_script()
+                trigger_alert_script()
                 time.sleep(60)
             except Exception as err:
                 print(err)
