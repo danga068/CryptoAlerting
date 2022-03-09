@@ -179,14 +179,19 @@ class CryptoAlert:
         last_10_min_data = ast.literal_eval(self.redis_client.get(int(last_index) - 10).decode("utf-8"))
 
         for currency in current_price_data.keys():
-            if currency == "datetime":
+            if currency == "datetime" or currency.endswith("UPUSDT") or currency.endswith("DOWNUSDT"):
                 continue
 
             diff_10_min = round((((current_price_data[currency] - last_10_min_data[currency]) * 100) / last_10_min_data[currency]), 2)
 
             if abs(diff_10_min) >= rules["hot"]["10_min"] and not self.redis_client.get(currency):
                 self.redis_client.setex(currency, 15*60, 1)
-                message = "Coin {} pump/dump by {}% : {} -> {}".format(currency.replace("USDT", ""), str(diff_10_min), str(last_10_min_data[currency]), str(current_price_data[currency]))
+                currency_detail_key = "DETAILS_" + str(currency)
+                currency_detail_value = self.redis_client.get(currency_detail_key, "")
+                currency_detail_value += ("->" + current_price_data[currency]) if currency_detail_value else current_price_data[currency]
+                self.redis_client.setex(currency, 15*60, 1)
+                self.redis_client.setex(currency_detail_key, 12*60*60, currency_detail_value)
+                message = "Coin {} pump/dump by {}% : {} -> {}, Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), str(last_10_min_data[currency]), str(current_price_data[currency]), currency_detail_value)
                 print (message)
                 PagerDuty().callPagerDuty(message)
 
