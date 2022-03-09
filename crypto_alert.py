@@ -187,7 +187,7 @@ class CryptoAlert:
             if abs(diff_10_min) >= rules["hot"]["10_min"] and not self.redis_client.get(currency):
                 self.redis_client.setex(currency, 15*60, 1)
                 currency_detail_key = "DETAILS_" + str(currency)
-                currency_detail_value = self.redis_client.get(currency_detail_key, "")
+                currency_detail_value = self.redis_client.get(currency_detail_key) or ""
                 currency_detail_value += ("->" + current_price_data[currency]) if currency_detail_value else current_price_data[currency]
                 self.redis_client.setex(currency, 15*60, 1)
                 self.redis_client.setex(currency_detail_key, 12*60*60, currency_detail_value)
