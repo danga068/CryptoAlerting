@@ -24,7 +24,9 @@ class Binance:
             price = coin_info.get("price")
 
             if symbol and symbol.endswith("USDT"):
-                payload[symbol] = float(price)
+                price = float(price)
+                price = round(price, 2) if price >= 1 else price
+                payload[symbol] = price
         return payload
 
 

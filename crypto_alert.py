@@ -188,13 +188,22 @@ class CryptoAlert:
                 self.redis_client.setex(currency, 15*60, 1)
                 currency_detail_key = "DETAILS_" + str(currency)
                 currency_detail_value = self.redis_client.get(currency_detail_key) or ""
+                current_price = float(current_price_data[currency])
                 if currency_detail_value:
-                    currency_detail_value = currency_detail_value.decode("utf-8") + ("->" + str(current_price_data[currency]))
+                    currency_detail_value = currency_detail_value.decode("utf-8") + ("->" + str(current_price))
                 else:
-                    currency_detail_value = str(current_price_data[currency])
-                self.redis_client.setex(currency, 15*60, 1)
+                    currency_detail_value = str(current_price)
                 self.redis_client.setex(currency_detail_key, 12*60*60, currency_detail_value)
-                message = "Coin {} pump/dump by {}% : {} -> {}, Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), str(last_10_min_data[currency]), str(current_price_data[currency]), currency_detail_value)
+
+                price_arr = currency_detail_value.split("->")
+                if len(price_arr) > 60:
+                    start_records = 5
+                    last_records = 20
+                    currency_detail_value = "->".join(price_arr[:start_records])
+                    currency_detail_value += "... {} records ...".format(len(price_arr)-start_records-last_records)
+                    currency_detail_value += "->".join(price_arr[-last_records:])
+
+                message = "Coin {} pump/dump by {}% : {} -> {}, Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), str(last_10_min_data[currency]), str(current_price), currency_detail_value)
                 print (message)
                 PagerDuty().callPagerDuty(message)
 
