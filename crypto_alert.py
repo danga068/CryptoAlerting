@@ -200,10 +200,10 @@ class CryptoAlert:
                     start_records = 5
                     last_records = 20
                     currency_detail_value = "->".join(price_arr[:start_records])
-                    currency_detail_value += "... {} records ...".format(len(price_arr)-start_records-last_records)
+                    currency_detail_value += " **** {} records *** ".format(len(price_arr)-start_records-last_records)
                     currency_detail_value += "->".join(price_arr[-last_records:])
 
-                message = "Coin {} pump/dump by {}% : {} -> {}, Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), str(last_10_min_data[currency]), str(current_price), currency_detail_value)
+                message = "Coin {} change by {}% : {} -> {}, Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), str(last_10_min_data[currency]), str(current_price), currency_detail_value)
                 print (message)
                 PagerDuty().callPagerDuty(message)
 
