@@ -205,7 +205,7 @@ class CryptoAlert:
                     currency_detail_value += " **** {} records *** ".format(len(price_arr)-start_records-last_records)
                     currency_detail_value += "<-".join(price_arr[-last_records:])
 
-                message = "{} changed {}% : L: {} H: {}, 10: {} Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), last_10_min_data[currency] str(low), str(high), currency_detail_value)
+                message = "{} changed {}% : L: {} H: {}, 10: {} Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), str(low), str(high), last_10_min_data[currency], currency_detail_value)
                 # print (message)
                 PagerDuty().callPagerDuty(message)
 
