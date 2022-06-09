@@ -74,7 +74,7 @@ rules = {
     }
 }
 
-integration_key = "39e531e5217a470dc0c6956f05d9728e"
+integration_key = "641cfd5136764c00c0434656e25a4536"
 # redis_host = "34.82.159.43"
 redis_host = "127.0.0.1"
 redis_pass = "dangaiit068"

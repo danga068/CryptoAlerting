@@ -207,7 +207,8 @@ class CryptoAlert:
 
                 message = "{} changed {}% : L: {} H: {}, 10: {} Data: {}".format(currency.replace("USDT", ""), str(diff_10_min), str(low), str(high), last_10_min_data[currency], currency_detail_value)
                 # print (message)
-                PagerDuty().callPagerDuty(message)
+                if diff_10_min <= -20 or diff_10_min >= rules["hot"]["10_min"]:
+                    PagerDuty().callPagerDuty(message)
 
 
 def trigger_alert_script():
